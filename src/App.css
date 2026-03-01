@@ -1,0 +1,380 @@
+.app-container {
+  min-height: 100vh;
+  width: 100vw;
+  background: #121212;
+  position: relative;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-container::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(2px 2px at 20% 30%, rgba(255, 255, 255, 0.1), transparent),
+    radial-gradient(2px 2px at 60% 70%, rgba(255, 255, 255, 0.1), transparent),
+    radial-gradient(1px 1px at 50% 50%, rgba(255, 255, 255, 0.1), transparent),
+    radial-gradient(1px 1px at 80% 10%, rgba(255, 255, 255, 0.1), transparent),
+    radial-gradient(2px 2px at 90% 60%, rgba(255, 255, 255, 0.1), transparent),
+    radial-gradient(1px 1px at 33% 80%, rgba(255, 255, 255, 0.1), transparent);
+  background-size: 200% 200%;
+  opacity: 0.3;
+}
+
+.app-container::after {
+  content: '';
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border: 2px dotted rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  position: relative;
+  z-index: 10;
+}
+
+.app-name {
+  font-size: 24px;
+  font-weight: bold;
+  color: #BB86FC;
+  letter-spacing: 1px;
+}
+
+.hamburger {
+  font-size: 28px;
+  color: white;
+  cursor: pointer;
+}
+
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #BB86FC 0%, #3700B3 100%);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.carousel-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 5;
+  padding: 20px 0;
+  width: 100%;
+}
+
+.carousel-wrapper {
+  display: flex;
+  padding: 40px 20px;
+  width: 100%;
+  max-width: 100%;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: visible;
+}
+
+.feature-card {
+  width: calc(100vw - 40px);
+  max-width: 320px;
+  min-height: 350px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 80px 20px 30px;
+  position: absolute;
+  transition: all 0.5s ease;
+  cursor: pointer;
+  overflow: hidden;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.feature-card.active {
+  background: rgba(30, 30, 30, 0.7);
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+}
+
+.feature-card.leaving {
+  background: rgba(30, 30, 30, 0.7);
+  animation: slideOutLeft 0.5s ease forwards;
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+}
+
+.feature-card.entering {
+  background: rgba(30, 30, 30, 0.7);
+  animation: slideInRight 0.5s ease forwards;
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+}
+
+@keyframes slideOutLeft {
+  0% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-100%) scale(0.8);
+  }
+}
+
+@keyframes slideInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(100%) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.earth-model {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #BB86FC 0%, #3700B3 100%);
+  border-radius: 50%;
+  box-shadow: 0 10px 30px rgba(187, 134, 252, 0.3), 0 0 20px rgba(187, 134, 252, 0.2);
+}
+
+.earth-model::before {
+  content: '';
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  top: 15px;
+  left: 12px;
+}
+
+.card-content {
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+}
+
+.feature-image {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  opacity: 0;
+}
+
+.feature-card.entering .feature-image {
+  animation: fadeUp 0.8s ease 0s forwards;
+}
+
+.feature-card.active .feature-image {
+  opacity: 1;
+}
+
+.background-number {
+  position: absolute;
+  top: -10px;
+  right: 5px;
+  font-size: 80px;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.03);
+  z-index: 0;
+}
+
+.feature-card.active .background-number {
+  color: rgba(255, 255, 255, 0.03);
+}
+
+.feature-card h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
+  color: rgba(255, 255, 255, 0.7);
+  opacity: 0;
+}
+
+.feature-card.entering h2 {
+  animation: fadeUp 0.8s ease 0.2s forwards;
+}
+
+.feature-card.active h2 {
+  color: #BB86FC;
+  opacity: 1;
+}
+
+.feature-card p {
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+  color: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+}
+
+.feature-card.entering p {
+  animation: fadeUp 0.8s ease 0.4s forwards;
+}
+
+.feature-card.active p {
+  color: rgba(255, 255, 255, 0.7);
+  opacity: 1;
+}
+
+.arrow-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #fbbf24;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(251, 191, 36, 0.4);
+  transition: transform 0.2s;
+  opacity: 0;
+}
+
+.feature-card.active .arrow-btn,
+.feature-card.entering .arrow-btn {
+  animation: fadeUp 0.8s ease 0.3s forwards;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.arrow-btn:hover {
+  transform: scale(1.1);
+}
+
+.app-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px 10px;
+  position: relative;
+  z-index: 10;
+  color: rgba(255, 255, 255, 0.7);
+  flex-wrap: wrap;
+}
+
+.avatars {
+  display: flex;
+  margin-right: 10px;
+}
+
+.avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #BB86FC 0%, #3700B3 100%);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  margin-left: -10px;
+}
+
+.avatar:first-child {
+  margin-left: 0;
+}
+
+.app-footer p {
+  margin: 0;
+  font-size: 13px;
+  text-align: center;
+}
+
+@media (min-width: 576px) {
+  .feature-card {
+    width: 300px;
+  }
+  
+  .earth-model {
+    width: 90px;
+    height: 90px;
+    top: -35px;
+  }
+  
+  .background-number {
+    font-size: 100px;
+  }
+  
+  .feature-card h2 {
+    font-size: 22px;
+  }
+}
+
+@media (min-width: 768px) {
+  .feature-card {
+    width: 320px;
+    min-height: 380px;
+    padding: 80px 30px 30px;
+  }
+  
+  .earth-model {
+    width: 100px;
+    height: 100px;
+    top: -40px;
+  }
+  
+  .earth-model::before {
+    width: 30px;
+    height: 30px;
+    top: 20px;
+    left: 15px;
+  }
+  
+  .background-number {
+    font-size: 120px;
+    top: -20px;
+    right: 10px;
+  }
+  
+  .feature-card h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+  
+  .feature-card p {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  
+  .app-footer p {
+    font-size: 14px;
+  }
+}
