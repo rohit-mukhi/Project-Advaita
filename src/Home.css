@@ -1,0 +1,157 @@
+.home-container {
+  min-height: 100vh;
+  background: #000;
+  color: #fff;
+  padding-bottom: 60px;
+}
+
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #262626;
+  position: sticky;
+  top: 0;
+  background: #000;
+  z-index: 100;
+}
+
+.home-header h1 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #BB86FC;
+  margin: 0;
+}
+
+.header-icons {
+  display: flex;
+  gap: 20px;
+  font-size: 24px;
+}
+
+.stories-section {
+  display: flex;
+  gap: 15px;
+  padding: 15px 20px;
+  overflow-x: auto;
+  border-bottom: 1px solid #262626;
+}
+
+.stories-section::-webkit-scrollbar {
+  display: none;
+}
+
+.story {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  min-width: 70px;
+}
+
+.story-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 3px solid #BB86FC;
+  cursor: pointer;
+}
+
+.story span {
+  font-size: 12px;
+  color: #fff;
+}
+
+.feed {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.post {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #262626;
+}
+
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+}
+
+.post-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.post-avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+
+.post-user span {
+  font-weight: 600;
+}
+
+.post-menu {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.post-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.post-actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px;
+  font-size: 24px;
+}
+
+.action-left {
+  display: flex;
+  gap: 15px;
+}
+
+.post-actions span {
+  cursor: pointer;
+}
+
+.post-likes {
+  padding: 0 15px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.post-caption {
+  padding: 5px 15px 15px;
+  font-size: 14px;
+}
+
+.post-caption strong {
+  margin-right: 5px;
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 0;
+  background: #000;
+  border-top: 1px solid #262626;
+  font-size: 28px;
+}
+
+.bottom-nav span {
+  cursor: pointer;
+}

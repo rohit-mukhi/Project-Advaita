@@ -248,6 +248,34 @@
   opacity: 1;
 }
 
+.get-started-btn {
+  background: linear-gradient(135deg, #BB86FC 0%, #3700B3 100%);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(187, 134, 252, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+  z-index: 10;
+}
+
+.get-started-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(187, 134, 252, 0.6);
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  position: relative;
+  z-index: 10;
+}
+
 .arrow-btn {
   width: 50px;
   height: 50px;
