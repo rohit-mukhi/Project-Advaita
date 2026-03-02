@@ -40,6 +40,37 @@ function Landing() {
 
   const [activeIndex, setActiveIndex] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const [touchStart, setTouchStart] = useState(0)
+  const [touchEnd, setTouchEnd] = useState(0)
+
+  const handleSwipe = () => {
+    if (touchStart - touchEnd > 50) {
+      handleNext()
+    }
+    if (touchStart - touchEnd < -50) {
+      handlePrev()
+    }
+  }
+
+  const handleNext = () => {
+    if (!isTransitioning) {
+      setIsTransitioning(true)
+      setTimeout(() => {
+        setActiveIndex((prev) => (prev + 1) % features.length)
+        setIsTransitioning(false)
+      }, 500)
+    }
+  }
+
+  const handlePrev = () => {
+    if (!isTransitioning) {
+      setIsTransitioning(true)
+      setTimeout(() => {
+        setActiveIndex((prev) => (prev - 1 + features.length) % features.length)
+        setIsTransitioning(false)
+      }, 500)
+    }
+  }
 
   useEffect(() => {
     AOS.init({ duration: 800, once: false })
@@ -66,7 +97,12 @@ function Landing() {
       </header>
 
       <main className="carousel-container">
-        <div className="carousel-wrapper">
+        <div 
+          className="carousel-wrapper"
+          onTouchStart={(e) => setTouchStart(e.targetTouches[0].clientX)}
+          onTouchMove={(e) => setTouchEnd(e.targetTouches[0].clientX)}
+          onTouchEnd={handleSwipe}
+        >
           <div className={`feature-card ${isTransitioning ? 'leaving' : 'active'}`}>
             <div className="earth-model"></div>
             <div className="card-content">

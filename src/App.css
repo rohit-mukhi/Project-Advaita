@@ -77,6 +77,40 @@
   width: 100%;
 }
 
+.nav-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  position: relative;
+  z-index: 10;
+}
+
+.next-slide-btn {
+  background: linear-gradient(135deg, #BB86FC 0%, #3700B3 100%);
+  border: none;
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 5px 15px rgba(187, 134, 252, 0.4);
+}
+
+.next-slide-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(187, 134, 252, 0.6);
+}
+
+.next-slide-btn:active {
+  transform: scale(0.95);
+}
+
 .carousel-wrapper {
   display: flex;
   padding: 40px 20px;
@@ -86,6 +120,12 @@
   align-items: center;
   position: relative;
   overflow: visible;
+  min-height: 450px;
+  cursor: grab;
+}
+
+.carousel-wrapper:active {
+  cursor: grabbing;
 }
 
 .feature-card {
@@ -96,7 +136,9 @@
   border-radius: 20px;
   padding: 80px 20px 30px;
   position: absolute;
-  transition: all 0.5s ease;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
   cursor: pointer;
   overflow: hidden;
   backdrop-filter: blur(20px) saturate(180%);
@@ -107,11 +149,10 @@
 .feature-card.active {
   background: rgba(30, 30, 30, 0.7);
   opacity: 1;
-  transform: translateX(0) scale(1);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.1);
-  position: relative;
   backdrop-filter: blur(30px) saturate(200%);
   -webkit-backdrop-filter: blur(30px) saturate(200%);
+  z-index: 2;
 }
 
 .feature-card.leaving {
@@ -131,22 +172,22 @@
 @keyframes slideOutLeft {
   0% {
     opacity: 1;
-    transform: translateX(0) scale(1);
+    transform: translateX(-50%) scale(1);
   }
   100% {
     opacity: 0;
-    transform: translateX(-100%) scale(0.8);
+    transform: translateX(-150%) scale(0.8);
   }
 }
 
 @keyframes slideInRight {
   0% {
     opacity: 0;
-    transform: translateX(100%) scale(0.8);
+    transform: translateX(50%) scale(0.8);
   }
   100% {
     opacity: 1;
-    transform: translateX(0) scale(1);
+    transform: translateX(-50%) scale(1);
   }
 }
 
