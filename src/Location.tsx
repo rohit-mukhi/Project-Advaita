@@ -75,6 +75,17 @@ function Location() {
           </div>
         ))}
       </div>
+
+      <footer className="location-footer">
+        <div className="footer-icon" onClick={() => navigate(`/map/${location}`)}>
+          <span>🗺️</span>
+          <span className="footer-label">Visit</span>
+        </div>
+        <div className="footer-icon">
+          <span>⭐</span>
+          <span className="footer-label">Reviews</span>
+        </div>
+      </footer>
     </div>
   )
 }

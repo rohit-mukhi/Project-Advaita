@@ -1,0 +1,60 @@
+.map-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.map-placeholder {
+  width: 100%;
+  max-width: 600px;
+  height: 400px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  border: 1px solid #262626;
+}
+
+.map-pin {
+  font-size: 80px;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.map-location-text {
+  font-size: 18px;
+  color: #BB86FC;
+  font-weight: 600;
+  margin: 0;
+}
+
+.plan-journey-btn {
+  background: linear-gradient(135deg, #BB86FC 0%, #3700B3 100%);
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(187, 134, 252, 0.4);
+  transition: all 0.3s ease;
+}
+
+.plan-journey-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(187, 134, 252, 0.6);
+}
