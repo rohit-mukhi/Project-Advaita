@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import './Home.css'
 import 'aos/dist/aos.css'
 import * as AOS from 'aos'
+import { Squeeze as Hamburger } from 'hamburger-react'
 
 function Home() {
   const [posts] = useState([
@@ -16,6 +17,7 @@ function Home() {
   ])
 
   const [loadedImages, setLoadedImages] = useState<{[key: number]: boolean}>({})
+  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
     AOS.init({ duration: 800, once: false })
@@ -32,9 +34,30 @@ function Home() {
         <div className="header-icons">
           <span>➕</span>
           <span>❤️</span>
-          <span>💬</span>
+          <div className="hamburger-wrapper">
+            <Hamburger toggled={menuOpen} toggle={setMenuOpen} size={24} color="#BB86FC" />
+          </div>
         </div>
       </header>
+
+      {menuOpen && (
+        <div className="dropdown-menu" style={{ 
+          position: 'fixed', 
+          top: '60px', 
+          right: '20px', 
+          background: '#1a1a1a',
+          border: '1px solid #262626',
+          borderRadius: '8px',
+          zIndex: 9999,
+          minWidth: '180px',
+          display: 'block'
+        }}>
+          <div className="menu-item" style={{ padding: '15px 20px', color: '#fff' }}>Profile</div>
+          <div className="menu-item" style={{ padding: '15px 20px', color: '#fff' }}>Settings</div>
+          <div className="menu-item" style={{ padding: '15px 20px', color: '#fff' }}>Saved Posts</div>
+          <div className="menu-item" style={{ padding: '15px 20px', color: '#fff' }}>Logout</div>
+        </div>
+      )}
 
       <div className="stories-section">
         {['Your Story', 'Sarah', 'Emma', 'Lisa', 'Maya', 'Anna'].map((name, i) => (

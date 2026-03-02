@@ -17,6 +17,10 @@
   z-index: 100;
 }
 
+.home-container {
+  position: relative;
+}
+
 .home-header h1 {
   font-size: 24px;
   font-weight: bold;
@@ -28,6 +32,55 @@
   display: flex;
   gap: 20px;
   font-size: 24px;
+  align-items: center;
+}
+
+.hamburger-wrapper {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  background: #1a1a1a;
+  border: 1px solid #262626;
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 200;
+  min-width: 180px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  animation: fadeDown 0.3s ease-out;
+}
+
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menu-item {
+  padding: 15px 20px;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+  border-bottom: 1px solid #262626;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-item:hover {
+  background: #262626;
+  color: #BB86FC;
 }
 
 .stories-section {
