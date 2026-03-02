@@ -145,6 +145,26 @@
   border-radius: 50%;
 }
 
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.user-name {
+  font-weight: 600;
+}
+
+.post-location {
+  font-size: 12px;
+  color: #888;
+  text-decoration: none;
+}
+
+.post-location:hover {
+  color: #BB86FC;
+}
+
 .post-user span {
   font-weight: 600;
 }
