@@ -119,7 +119,7 @@ function Home() {
 
       <nav className="bottom-nav">
         <span onClick={() => navigate('/home')}>🏠</span>
-        <span>🔍</span>
+        <span onClick={() => navigate('/explore')}>🔍</span>
         <span onClick={() => navigate('/create')}>➕</span>
         <span>🎬</span>
         <span>👤</span>

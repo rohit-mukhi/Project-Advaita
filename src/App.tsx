@@ -4,6 +4,7 @@ import Home from './Home'
 import Location from './Location'
 import Map from './Map'
 import CreatePost from './CreatePost'
+import Explore from './Explore'
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LoadingScreen />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/explore" element={<Explore />} />
         <Route path="/location/:location" element={<Location />} />
         <Route path="/map/:location" element={<Map />} />
         <Route path="/create" element={<CreatePost />} />
