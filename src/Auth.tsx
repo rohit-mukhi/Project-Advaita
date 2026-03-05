@@ -14,10 +14,11 @@ function Auth() {
   }, [navigate])
 
   const handleGoogleLogin = async () => {
+    const redirectUrl = window.location.origin + '/home'
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: 'http://localhost:5173/home'
+        redirectTo: redirectUrl
       }
     })
   }
