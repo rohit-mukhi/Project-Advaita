@@ -82,7 +82,7 @@ function Location() {
           <span>🗺️</span>
           <span className="footer-label">Visit</span>
         </div>
-        <div className="footer-icon">
+        <div className="footer-icon" onClick={() => navigate(`/reviews/${location}`)}>
           <span>⭐</span>
           <span className="footer-label">Reviews</span>
         </div>
