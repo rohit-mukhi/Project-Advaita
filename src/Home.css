@@ -178,8 +178,9 @@
 .post-image-container {
   position: relative;
   width: 100%;
-  min-height: 400px;
+  height: 400px;
   background: #1a1a1a;
+  overflow: hidden;
 }
 
 .image-loader {
@@ -202,10 +203,14 @@
 
 .post-image {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
   opacity: 0;
   transition: opacity 0.3s ease;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .post-image.loaded {
