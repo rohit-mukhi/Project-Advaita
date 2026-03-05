@@ -3,6 +3,7 @@
   background: #000;
   color: #fff;
   padding-bottom: 60px;
+  overflow-x: hidden;
 }
 
 .home-header {
@@ -271,7 +272,7 @@
   padding: 15px 0;
   background: #000;
   border-top: 1px solid #262626;
-  z-index: 100;
+  z-index: 50;
 }
 
 .footer-icon {

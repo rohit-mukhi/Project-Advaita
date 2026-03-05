@@ -8,15 +8,21 @@ import { supabase } from './lib/supabase'
 
 function Home() {
   const navigate = useNavigate()
+  
+  const locations = [
+    'Malibu Beach, CA', 'Brooklyn, NY', 'Yosemite National Park', 'Miami, FL',
+    'Portland, OR', 'Austin, TX', 'Seattle, WA', 'San Francisco, CA'
+  ]
+  
   const [posts] = useState([
-    { id: 1, user: 'Sarah Johnson', avatar: '#BB86FC', image: 'https://picsum.photos/400/400?random=1', likes: 234, caption: 'Beautiful sunset today! 🌅', location: 'Malibu Beach, CA' },
-    { id: 2, user: 'Emma Davis', avatar: '#3700B3', image: 'https://picsum.photos/400/400?random=2', likes: 189, caption: 'Coffee and good vibes ☕', location: 'Brooklyn, NY' },
-    { id: 3, user: 'Lisa Chen', avatar: '#BB86FC', image: 'https://picsum.photos/400/400?random=3', likes: 456, caption: 'Weekend adventures 🏔️', location: 'Yosemite National Park' },
-    { id: 4, user: 'Maya Patel', avatar: '#3700B3', image: 'https://picsum.photos/400/400?random=4', likes: 312, caption: 'Living my best life 💫', location: 'Miami, FL' },
-    { id: 5, user: 'Anna Williams', avatar: '#BB86FC', image: 'https://picsum.photos/400/400?random=5', likes: 567, caption: 'Nature therapy 🌿', location: 'Portland, OR' },
-    { id: 6, user: 'Sophie Martin', avatar: '#3700B3', image: 'https://picsum.photos/400/400?random=6', likes: 423, caption: 'Good times with friends 🎉', location: 'Austin, TX' },
-    { id: 7, user: 'Rachel Green', avatar: '#BB86FC', image: 'https://picsum.photos/400/400?random=7', likes: 289, caption: 'Exploring new places 🗺️', location: 'Seattle, WA' },
-    { id: 8, user: 'Jessica Lee', avatar: '#3700B3', image: 'https://picsum.photos/400/400?random=8', likes: 501, caption: 'Peaceful moments 🧘‍♀️', location: 'San Francisco, CA' },
+    { id: 1, user: 'Sarah Johnson', avatar: '#BB86FC', image: 'https://picsum.photos/400/400?random=1', likes: 234, caption: 'Beautiful sunset today! 🌅', location: locations[Math.floor(Math.random() * locations.length)] },
+    { id: 2, user: 'Emma Davis', avatar: '#3700B3', image: 'https://picsum.photos/400/400?random=2', likes: 189, caption: 'Coffee and good vibes ☕', location: locations[Math.floor(Math.random() * locations.length)] },
+    { id: 3, user: 'Lisa Chen', avatar: '#BB86FC', image: 'https://picsum.photos/400/400?random=3', likes: 456, caption: 'Weekend adventures 🏔️', location: locations[Math.floor(Math.random() * locations.length)] },
+    { id: 4, user: 'Maya Patel', avatar: '#3700B3', image: 'https://picsum.photos/400/400?random=4', likes: 312, caption: 'Living my best life 💫', location: locations[Math.floor(Math.random() * locations.length)] },
+    { id: 5, user: 'Anna Williams', avatar: '#BB86FC', image: 'https://picsum.photos/400/400?random=5', likes: 567, caption: 'Nature therapy 🌿', location: locations[Math.floor(Math.random() * locations.length)] },
+    { id: 6, user: 'Sophie Martin', avatar: '#3700B3', image: 'https://picsum.photos/400/400?random=6', likes: 423, caption: 'Good times with friends 🎉', location: locations[Math.floor(Math.random() * locations.length)] },
+    { id: 7, user: 'Rachel Green', avatar: '#BB86FC', image: 'https://picsum.photos/400/400?random=7', likes: 289, caption: 'Exploring new places 🗺️', location: locations[Math.floor(Math.random() * locations.length)] },
+    { id: 8, user: 'Jessica Lee', avatar: '#3700B3', image: 'https://picsum.photos/400/400?random=8', likes: 501, caption: 'Peaceful moments 🧘‍♀️', location: locations[Math.floor(Math.random() * locations.length)] },
   ])
 
   const [loadedImages, setLoadedImages] = useState<{[key: number]: boolean}>({})

@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
-import './Home.css'
 import './Location.css'
 import 'aos/dist/aos.css'
 import * as AOS from 'aos'
@@ -38,40 +37,28 @@ function Location() {
   }, [])
 
   return (
-    <div className="home-container">
-      <header className="home-header">
+    <div className="location-page">
+      <header className="location-header">
         <span onClick={() => navigate('/home')} style={{ cursor: 'pointer', fontSize: '24px' }}>←</span>
         <h1>{locationName}</h1>
         <div></div>
       </header>
 
-      <div className="location-map-container">
-        <MapContainer center={coordinates} zoom={13} scrollWheelZoom={false}>
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <Marker position={coordinates}>
-            <Popup>{locationName}</Popup>
-          </Marker>
-        </MapContainer>
-      </div>
-
-      <div style={{ padding: '20px', textAlign: 'center' }}>
+      <div className="location-map-section">
+        <div className="location-map-container">
+          <MapContainer center={coordinates} zoom={13} scrollWheelZoom={false}>
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <Marker position={coordinates}>
+              <Popup>{locationName}</Popup>
+            </Marker>
+          </MapContainer>
+        </div>
         <button 
           onClick={() => navigate(`/map/${location}`)}
-          style={{
-            padding: '15px 40px',
-            background: '#BB86FC',
-            color: '#000',
-            border: 'none',
-            borderRadius: '8px',
-            fontSize: '16px',
-            fontWeight: '600',
-            cursor: 'pointer',
-            width: '100%',
-            maxWidth: '400px'
-          }}
+          className="journey-button"
         >
           Plan Your Journey
         </button>

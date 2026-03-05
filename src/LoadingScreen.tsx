@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import Landing from './Landing'
-import logo from './assets/Loading-Screen/logo.png'
+import logo from './assets/Loading-Screen/aroha-logo.png'
 import './LoadingScreen.css'
 
 function LoadingScreen() {
