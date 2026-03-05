@@ -10,8 +10,8 @@ function Home() {
   const navigate = useNavigate()
   
   const locations = [
-    'Malibu Beach, CA', 'Brooklyn, NY', 'Yosemite National Park', 'Miami, FL',
-    'Portland, OR', 'Austin, TX', 'Seattle, WA', 'San Francisco, CA'
+    'Lingaraj Temple', 'Nandankanan Zoo', 'Dhauli Giri', 'Udayagiri Caves',
+    'Rajarani Temple', 'Ekamra Haat', 'Nicco Park', 'Esplanade One Mall'
   ]
   
   const [posts] = useState([

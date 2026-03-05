@@ -16,14 +16,14 @@ L.Icon.Default.mergeOptions({
 })
 
 const locationCoordinates: { [key: string]: [number, number] } = {
-  'Malibu Beach, CA': [34.0259, -118.7798],
-  'Brooklyn, NY': [40.6782, -73.9442],
-  'Yosemite National Park': [37.8651, -119.5383],
-  'Miami, FL': [25.7617, -80.1918],
-  'Portland, OR': [45.5152, -122.6784],
-  'Austin, TX': [30.2672, -97.7431],
-  'Seattle, WA': [47.6062, -122.3321],
-  'San Francisco, CA': [37.7749, -122.4194],
+  'Lingaraj Temple': [20.2379, 85.8337],
+  'Nandankanan Zoo': [20.3974, 85.8161],
+  'Dhauli Giri': [20.1894, 85.8336],
+  'Udayagiri Caves': [20.2644, 85.7711],
+  'Rajarani Temple': [20.2547, 85.8514],
+  'Ekamra Haat': [20.2961, 85.8245],
+  'Nicco Park': [20.2961, 85.8245],
+  'Esplanade One Mall': [20.2961, 85.8245],
 }
 
 function Location() {
