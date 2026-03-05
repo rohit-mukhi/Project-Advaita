@@ -1,79 +1,80 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import 'leaflet/dist/leaflet.css'
 import './Home.css'
+import './Location.css'
 import 'aos/dist/aos.css'
 import * as AOS from 'aos'
+import L from 'leaflet'
+
+// Fix default marker icon
+delete (L.Icon.Default.prototype as any)._getIconUrl
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+})
+
+const locationCoordinates: { [key: string]: [number, number] } = {
+  'Malibu Beach, CA': [34.0259, -118.7798],
+  'Brooklyn, NY': [40.6782, -73.9442],
+  'Yosemite National Park': [37.8651, -119.5383],
+  'Miami, FL': [25.7617, -80.1918],
+  'Portland, OR': [45.5152, -122.6784],
+  'Austin, TX': [30.2672, -97.7431],
+  'Seattle, WA': [47.6062, -122.3321],
+  'San Francisco, CA': [37.7749, -122.4194],
+}
 
 function Location() {
   const { location } = useParams()
   const navigate = useNavigate()
-  
-  const allPosts = [
-    { id: 1, user: 'Sarah Johnson', avatar: '#BB86FC', image: 'https://picsum.photos/400/400?random=1', likes: 234, caption: 'Beautiful sunset today! 🌅', location: 'Malibu Beach, CA' },
-    { id: 2, user: 'Emma Davis', avatar: '#3700B3', image: 'https://picsum.photos/400/400?random=2', likes: 189, caption: 'Coffee and good vibes ☕', location: 'Brooklyn, NY' },
-    { id: 3, user: 'Lisa Chen', avatar: '#BB86FC', image: 'https://picsum.photos/400/400?random=3', likes: 456, caption: 'Weekend adventures 🏔️', location: 'Yosemite National Park' },
-    { id: 4, user: 'Maya Patel', avatar: '#3700B3', image: 'https://picsum.photos/400/400?random=4', likes: 312, caption: 'Living my best life 💫', location: 'Miami, FL' },
-    { id: 5, user: 'Anna Williams', avatar: '#BB86FC', image: 'https://picsum.photos/400/400?random=5', likes: 567, caption: 'Nature therapy 🌿', location: 'Portland, OR' },
-    { id: 6, user: 'Sophie Martin', avatar: '#3700B3', image: 'https://picsum.photos/400/400?random=6', likes: 423, caption: 'Good times with friends 🎉', location: 'Austin, TX' },
-    { id: 7, user: 'Rachel Green', avatar: '#BB86FC', image: 'https://picsum.photos/400/400?random=7', likes: 289, caption: 'Exploring new places 🗺️', location: 'Seattle, WA' },
-    { id: 8, user: 'Jessica Lee', avatar: '#3700B3', image: 'https://picsum.photos/400/400?random=8', likes: 501, caption: 'Peaceful moments 🧘♀️', location: 'San Francisco, CA' },
-  ]
-
-  const filteredPosts = allPosts.filter(post => post.location === decodeURIComponent(location || ''))
-  const [loadedImages, setLoadedImages] = useState<{[key: number]: boolean}>({})
+  const locationName = decodeURIComponent(location || '')
+  const coordinates = locationCoordinates[locationName] || [37.7749, -122.4194]
 
   useEffect(() => {
     AOS.init({ duration: 800, once: false })
   }, [])
 
-  const handleImageLoad = (postId: number) => {
-    setLoadedImages(prev => ({ ...prev, [postId]: true }))
-  }
-
   return (
     <div className="home-container">
       <header className="home-header">
         <span onClick={() => navigate('/home')} style={{ cursor: 'pointer', fontSize: '24px' }}>←</span>
-        <h1>{decodeURIComponent(location || '')}</h1>
+        <h1>{locationName}</h1>
         <div></div>
       </header>
 
-      <div className="feed">
-        {filteredPosts.map((post, index) => (
-          <div key={post.id} className="post" data-aos="fade-up" data-aos-delay={index * 100}>
-            <div className="post-header">
-              <div className="post-user">
-                <div className="post-avatar" style={{ background: post.avatar }}></div>
-                <div className="user-info">
-                  <span className="user-name">{post.user}</span>
-                  <span className="post-location">{post.location}</span>
-                </div>
-              </div>
-              <span className="post-menu">⋯</span>
-            </div>
-            <div className="post-image-container">
-              {!loadedImages[post.id] && <div className="image-loader"></div>}
-              <img 
-                src={post.image} 
-                alt="post" 
-                className={`post-image ${loadedImages[post.id] ? 'loaded' : ''}`}
-                onLoad={() => handleImageLoad(post.id)}
-              />
-            </div>
-            <div className="post-actions">
-              <div className="action-left">
-                <span>❤️</span>
-                <span>💬</span>
-                <span>📤</span>
-              </div>
-              <span>🔖</span>
-            </div>
-            <div className="post-likes">{post.likes} likes</div>
-            <div className="post-caption">
-              <strong>{post.user}</strong> {post.caption}
-            </div>
-          </div>
-        ))}
+      <div className="location-map-container">
+        <MapContainer center={coordinates} zoom={13} scrollWheelZoom={false}>
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <Marker position={coordinates}>
+            <Popup>{locationName}</Popup>
+          </Marker>
+        </MapContainer>
+      </div>
+
+      <div style={{ padding: '20px', textAlign: 'center' }}>
+        <button 
+          onClick={() => navigate(`/map/${location}`)}
+          style={{
+            padding: '15px 40px',
+            background: '#BB86FC',
+            color: '#000',
+            border: 'none',
+            borderRadius: '8px',
+            fontSize: '16px',
+            fontWeight: '600',
+            cursor: 'pointer',
+            width: '100%',
+            maxWidth: '400px'
+          }}
+        >
+          Plan Your Journey
+        </button>
       </div>
 
       <footer className="location-footer">
