@@ -5,17 +5,20 @@ import Location from './Location'
 import Map from './Map'
 import CreatePost from './CreatePost'
 import Explore from './Explore'
+import Auth from './Auth'
+import { ProtectedRoute } from './ProtectedRoute'
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LoadingScreen />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/explore" element={<Explore />} />
-        <Route path="/location/:location" element={<Location />} />
-        <Route path="/map/:location" element={<Map />} />
-        <Route path="/create" element={<CreatePost />} />
+        <Route path="/auth" element={<Auth />} />
+        <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+        <Route path="/explore" element={<ProtectedRoute><Explore /></ProtectedRoute>} />
+        <Route path="/location/:location" element={<ProtectedRoute><Location /></ProtectedRoute>} />
+        <Route path="/map/:location" element={<ProtectedRoute><Map /></ProtectedRoute>} />
+        <Route path="/create" element={<ProtectedRoute><CreatePost /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   )

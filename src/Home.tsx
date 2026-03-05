@@ -4,6 +4,7 @@ import './Home.css'
 import 'aos/dist/aos.css'
 import * as AOS from 'aos'
 import { Squeeze as Hamburger } from 'hamburger-react'
+import { supabase } from './lib/supabase'
 
 function Home() {
   const navigate = useNavigate()
@@ -57,7 +58,10 @@ function Home() {
           <div className="menu-item" style={{ padding: '15px 20px', color: '#fff' }}>Profile</div>
           <div className="menu-item" style={{ padding: '15px 20px', color: '#fff' }}>Settings</div>
           <div className="menu-item" style={{ padding: '15px 20px', color: '#fff' }}>Saved Posts</div>
-          <div className="menu-item" style={{ padding: '15px 20px', color: '#fff' }}>Logout</div>
+          <div className="menu-item" style={{ padding: '15px 20px', color: '#fff', cursor: 'pointer' }} onClick={async () => {
+            await supabase.auth.signOut()
+            navigate('/auth')
+          }}>Logout</div>
         </div>
       )}
 

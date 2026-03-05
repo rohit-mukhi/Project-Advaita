@@ -129,7 +129,7 @@ function Landing() {
       </main>
 
       <div className="button-container">
-        <button className="get-started-btn" onClick={() => navigate('/home')}>Get Started</button>
+        <button className="get-started-btn" onClick={() => navigate('/auth')}>Get Started</button>
       </div>
 
       <footer className="app-footer">
