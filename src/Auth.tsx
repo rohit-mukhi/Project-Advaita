@@ -38,7 +38,7 @@ function Auth() {
         borderRadius: '12px',
         border: '1px solid #262626'
       }}>
-        <h2 style={{ color: '#BB86FC', marginBottom: '30px' }}>Welcome to Aroha</h2>
+        <h2 style={{ color: '#BB86FC', marginBottom: '30px' }}>Welcome to Sueno</h2>
         <button 
           onClick={handleGoogleLogin}
           style={{ 

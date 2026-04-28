@@ -39,7 +39,7 @@ function Home() {
   return (
     <div className="home-container">
       <header className="home-header">
-        <h1>Aroha</h1>
+        <h1>Sueno</h1>
         <div className="header-icons">
           <span>➕</span>
           <span>❤️</span>

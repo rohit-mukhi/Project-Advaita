@@ -92,7 +92,7 @@ function Landing() {
   return (
     <div className="app-container">
       <header className="app-header">
-        <div className="app-name">Aroha</div>
+        <div className="app-name">Sueno</div>
         <div className="profile-pic"></div>
       </header>
 

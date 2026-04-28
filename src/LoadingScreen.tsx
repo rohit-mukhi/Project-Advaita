@@ -16,8 +16,8 @@ function LoadingScreen() {
   if (loading) {
     return (
       <div className="loading-screen">
-        <img src={logo} alt="Aroha Logo" className="loading-logo" />
-        <h1 className="loading-title">Aroha</h1>
+        <img src={logo} alt="Sueno Logo" className="loading-logo" />
+        <h1 className="loading-title">Sueno</h1>
       </div>
     )
   }
