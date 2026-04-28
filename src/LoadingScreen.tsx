@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import Landing from './Landing'
-import logo from './assets/Loading-Screen/aroha-logo.png'
+import logo from './assets/Loading-Screen/Sueno-logo.png'
 import './LoadingScreen.css'
 
 function LoadingScreen() {
@@ -17,7 +17,6 @@ function LoadingScreen() {
     return (
       <div className="loading-screen">
         <img src={logo} alt="Sueno Logo" className="loading-logo" />
-        <h1 className="loading-title">Sueno</h1>
       </div>
     )
   }

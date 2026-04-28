@@ -10,8 +10,8 @@
 }
 
 .loading-logo {
-  width: 150px;
-  height: 150px;
+  width: 280px;
+  height: 280px;
   object-fit: contain;
   animation: fadeIn 1s ease-in-out;
 }
