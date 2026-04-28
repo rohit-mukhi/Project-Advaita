@@ -41,21 +41,25 @@ function RoutingMachine({ userLocation, destination }: { userLocation: [number, 
           L.latLng(userLocation[0], userLocation[1]),
           L.latLng(destination[0], destination[1])
         ],
-        routeWhileDragging: true,
+        routeWhileDragging: false,
         showAlternatives: true,
         altLineOptions: {
           styles: [
-            { color: '#888', opacity: 0.6, weight: 4 }
+            { color: '#03DAC6', opacity: 0.7, weight: 5 },
+            { color: '#CF6679', opacity: 0.7, weight: 5 }
           ]
         },
         lineOptions: {
           styles: [
-            { color: '#BB86FC', opacity: 0.8, weight: 6 }
+            { color: '#BB86FC', opacity: 0.9, weight: 6 }
           ]
         },
         addWaypoints: false,
         draggableWaypoints: false,
-        fitSelectedRoutes: true
+        fitSelectedRoutes: true,
+        router: (L as any).Routing.osrmv1({
+          serviceUrl: 'https://router.project-osrm.org/route/v1'
+        })
       }).addTo(map)
     } catch (error) {
       console.error('Routing error:', error)
@@ -91,7 +95,7 @@ function Map() {
           setUserLocation([position.coords.latitude, position.coords.longitude])
         },
         (error) => {
-          console.error('Geolocation error:', error)
+          console.error('Geolocation error:', error.code, error.message)
           // Fallback to ITER Main Gate, Jagamara coordinates
           setUserLocation([20.3489, 85.8172])
           setError('')
@@ -168,7 +172,8 @@ function Map() {
       </div>
 
       <div className="button-container">
-        <button className="book-ride-btn">Book a Ride</button>
+        <button className="book-ride-btn" onClick={() => navigate(`/book-ride/${location}`)}>Book a Ride</button>
+        <button className="book-ride-btn">Switch to Safest Route</button>
       </div>
     </div>
   )

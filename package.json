@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.98.0",
+    "@tensorflow/tfjs": "^4.22.0",
     "aos": "^2.3.4",
     "bootstrap": "^5.3.8",
     "hamburger-react": "^2.5.2",

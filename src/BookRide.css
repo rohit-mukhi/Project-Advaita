@@ -1,0 +1,170 @@
+.book-ride-container {
+  min-height: 100vh;
+  background: #121212;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.loading-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid #262626;
+  border-top: 4px solid #BB86FC;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-content h2 {
+  color: #BB86FC;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.ride-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #1a1a1a;
+  border-bottom: 1px solid #262626;
+}
+
+.ride-header h1 {
+  font-size: 20px;
+  margin: 0;
+}
+
+.route-map {
+  height: 250px;
+  width: 100%;
+  border-bottom: 1px solid #262626;
+}
+
+.ride-details {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow-y: auto;
+  max-height: calc(100vh - 250px - 60px - 200px);
+}
+
+.ride-card {
+  background: #1a1a1a;
+  border: 1px solid #262626;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.ride-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ride-type {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.car-icon {
+  font-size: 40px;
+}
+
+.ride-type h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #BB86FC;
+}
+
+.ride-type p {
+  margin: 5px 0 0 0;
+  font-size: 14px;
+  color: #888;
+}
+
+.ride-price {
+  text-align: right;
+}
+
+.ride-price h3 {
+  margin: 0;
+  font-size: 22px;
+  color: #03DAC6;
+}
+
+.ride-price p {
+  margin: 5px 0 0 0;
+  font-size: 14px;
+  color: #888;
+}
+
+.select-ride-btn {
+  background: #BB86FC;
+  color: #000;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.select-ride-btn:hover {
+  background: #9d6fd9;
+  transform: translateY(-2px);
+}
+
+.ride-info-section {
+  background: #1a1a1a;
+  border-top: 1px solid #262626;
+  padding: 20px;
+}
+
+.ride-info-section h3 {
+  margin: 0 0 15px 0;
+  color: #BB86FC;
+  font-size: 18px;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #262626;
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-item span:first-child {
+  color: #888;
+}
+
+.info-item span:last-child {
+  color: white;
+  font-weight: 500;
+}
