@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
-import L from 'leaflet'
 import { startSafetyMonitor, stopSafetyMonitor } from './services/voiceBridge'
 import 'leaflet/dist/leaflet.css'
 import './RideTracking.css'
@@ -43,7 +42,6 @@ function RideTracking() {
   const [userLocation, setUserLocation] = useState<[number, number]>([20.3489, 85.8172])
   const [distressActive, setDistressActive] = useState(false)
   const [distressAlert, setDistressAlert] = useState(false)
-  const [listening, setListening] = useState(false)
   const navigate = useNavigate()
   const { location, rideType } = useParams()
 
