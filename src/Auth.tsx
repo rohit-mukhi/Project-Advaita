@@ -6,11 +6,15 @@ function Auth() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) {
-        navigate('/home')
-      }
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) navigate('/home')
     })
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) navigate('/home')
+    })
+
+    return () => subscription.unsubscribe()
   }, [navigate])
 
   const handleGoogleLogin = async () => {
