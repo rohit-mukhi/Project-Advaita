@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -15,26 +15,30 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
 })
 
-const locationCoordinates: { [key: string]: [number, number] } = {
-  'Lingaraj Temple': [20.2379, 85.8337],
-  'Nandankanan Zoo': [20.3974, 85.8161],
-  'Dhauli Giri': [20.1894, 85.8336],
-  'Udayagiri Caves': [20.2644, 85.7711],
-  'Rajarani Temple': [20.2547, 85.8514],
-  'Ekamra Haat': [20.2961, 85.8245],
-  'Nicco Park': [20.2961, 85.8245],
-  'Esplanade One Mall': [20.2961, 85.8245],
-}
-
 function Location() {
   const { location } = useParams()
   const navigate = useNavigate()
   const locationName = decodeURIComponent(location || '')
-  const coordinates = locationCoordinates[locationName] || [37.7749, -122.4194]
+  const [coordinates, setCoordinates] = useState<[number, number] | null>(null)
+  const [notFound, setNotFound] = useState(false)
 
   useEffect(() => {
     AOS.init({ duration: 800, once: false })
   }, [])
+
+  useEffect(() => {
+    if (!locationName) return
+    fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(locationName)}&format=json&limit=1`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.length > 0) {
+          setCoordinates([parseFloat(data[0].lat), parseFloat(data[0].lon)])
+        } else {
+          setNotFound(true)
+        }
+      })
+      .catch(() => setNotFound(true))
+  }, [locationName])
 
   return (
     <div className="location-page">
@@ -46,19 +50,31 @@ function Location() {
 
       <div className="location-map-section">
         <div className="location-map-container">
-          <MapContainer center={coordinates} zoom={13} scrollWheelZoom={false}>
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            <Marker position={coordinates}>
-              <Popup>{locationName}</Popup>
-            </Marker>
-          </MapContainer>
+          {notFound ? (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#666', flexDirection: 'column', gap: '8px' }}>
+              <span style={{ fontSize: '32px' }}>📍</span>
+              <p>Location not found</p>
+            </div>
+          ) : !coordinates ? (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#666' }}>
+              <p>Loading map...</p>
+            </div>
+          ) : (
+            <MapContainer center={coordinates} zoom={13} scrollWheelZoom={false}>
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <Marker position={coordinates}>
+                <Popup>{locationName}</Popup>
+              </Marker>
+            </MapContainer>
+          )}
         </div>
-        <button 
+        <button
           onClick={() => navigate(`/map/${location}`)}
           className="journey-button"
+          disabled={!coordinates}
         >
           Plan Your Journey
         </button>
