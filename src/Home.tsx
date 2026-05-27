@@ -6,33 +6,54 @@ import * as AOS from 'aos'
 import { Squeeze as Hamburger } from 'hamburger-react'
 import { supabase } from './lib/supabase'
 
+type Post = {
+  id: string
+  user_name: string
+  user_avatar_url: string | null
+  image_url: string
+  caption: string
+  location: string
+  likes: number
+}
+
 function Home() {
   const navigate = useNavigate()
-  
-  const locations = [
-    'Lingaraj Temple', 'Nandankanan Zoo', 'Dhauli Giri', 'Udayagiri Caves',
-    'Rajarani Temple', 'Ekamra Haat', 'Nicco Park', 'Esplanade One Mall'
-  ]
-  
-  const [posts] = useState([
-    { id: 1, user: 'Sarah Johnson', avatar: '#BB86FC', image: 'https://picsum.photos/400/400?random=1', likes: 234, caption: 'Beautiful sunset today! 🌅', location: locations[Math.floor(Math.random() * locations.length)] },
-    { id: 2, user: 'Emma Davis', avatar: '#3700B3', image: 'https://picsum.photos/400/400?random=2', likes: 189, caption: 'Coffee and good vibes ☕', location: locations[Math.floor(Math.random() * locations.length)] },
-    { id: 3, user: 'Lisa Chen', avatar: '#BB86FC', image: 'https://picsum.photos/400/400?random=3', likes: 456, caption: 'Weekend adventures 🏔️', location: locations[Math.floor(Math.random() * locations.length)] },
-    { id: 4, user: 'Maya Patel', avatar: '#3700B3', image: 'https://picsum.photos/400/400?random=4', likes: 312, caption: 'Living my best life 💫', location: locations[Math.floor(Math.random() * locations.length)] },
-    { id: 5, user: 'Anna Williams', avatar: '#BB86FC', image: 'https://picsum.photos/400/400?random=5', likes: 567, caption: 'Nature therapy 🌿', location: locations[Math.floor(Math.random() * locations.length)] },
-    { id: 6, user: 'Sophie Martin', avatar: '#3700B3', image: 'https://picsum.photos/400/400?random=6', likes: 423, caption: 'Good times with friends 🎉', location: locations[Math.floor(Math.random() * locations.length)] },
-    { id: 7, user: 'Rachel Green', avatar: '#BB86FC', image: 'https://picsum.photos/400/400?random=7', likes: 289, caption: 'Exploring new places 🗺️', location: locations[Math.floor(Math.random() * locations.length)] },
-    { id: 8, user: 'Jessica Lee', avatar: '#3700B3', image: 'https://picsum.photos/400/400?random=8', likes: 501, caption: 'Peaceful moments 🧘‍♀️', location: locations[Math.floor(Math.random() * locations.length)] },
-  ])
-
-  const [loadedImages, setLoadedImages] = useState<{[key: number]: boolean}>({})
+  const [posts, setPosts] = useState<Post[]>([])
+  const [loadedImages, setLoadedImages] = useState<{ [key: string]: boolean }>({})
   const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
     AOS.init({ duration: 800, once: false })
   }, [])
 
-  const handleImageLoad = (postId: number) => {
+  useEffect(() => {
+    const today = new Date()
+    const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate()
+
+    const seededRandom = (s: number) => {
+      let t = s + 0x6D2B79F5
+      t = Math.imul(t ^ (t >>> 15), t | 1)
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61)
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+    }
+
+    const shuffle = <T,>(arr: T[], s: number): T[] => {
+      const a = [...arr]
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(seededRandom(s + i) * (i + 1));[a[i], a[j]] = [a[j], a[i]]
+      }
+      return a
+    }
+
+    supabase
+      .from('posts_with_user')
+      .select('*')
+      .then(({ data, error }) => {
+        if (!error && data) setPosts(shuffle(data, seed))
+      })
+  }, [])
+
+  const handleImageLoad = (postId: string) => {
     setLoadedImages(prev => ({ ...prev, [postId]: true }))
   }
 
@@ -81,32 +102,43 @@ function Home() {
       </div>
 
       <div className="feed">
+        {posts.length === 0 && (
+          <div style={{ textAlign: 'center', padding: '60px 20px', color: '#555' }}>
+            <div style={{ fontSize: '48px', marginBottom: '12px' }}>📷</div>
+            <p style={{ fontSize: '16px' }}>No posts yet. Be the first to share!</p>
+          </div>
+        )}
         {posts.map((post, index) => (
           <div key={post.id} className="post" data-aos="fade-up" data-aos-delay={index * 100}>
             <div className="post-header">
               <div className="post-user">
-                <div className="post-avatar" style={{ background: post.avatar }}></div>
+                {post.user_avatar_url
+                  ? <img src={post.user_avatar_url} alt="avatar" className="post-avatar" style={{ borderRadius: '50%', width: '36px', height: '36px', objectFit: 'cover' }} />
+                  : <div className="post-avatar" style={{ background: '#BB86FC' }}></div>
+                }
                 <div className="user-info">
-                  <span className="user-name">{post.user}</span>
-                  <a 
-                    href="#" 
-                    className="post-location" 
-                    onClick={(e) => {
-                      e.preventDefault()
-                      navigate(`/location/${encodeURIComponent(post.location)}`)
-                    }}
-                  >
-                    {post.location}
-                  </a>
+                  <span className="user-name">{post.user_name}</span>
+                  {post.location && (
+                    <a
+                      href="#"
+                      className="post-location"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        navigate(`/location/${encodeURIComponent(post.location)}`)
+                      }}
+                    >
+                      {post.location}
+                    </a>
+                  )}
                 </div>
               </div>
               <span className="post-menu">⋯</span>
             </div>
             <div className="post-image-container">
               {!loadedImages[post.id] && <div className="image-loader"></div>}
-              <img 
-                src={post.image} 
-                alt="post" 
+              <img
+                src={post.image_url}
+                alt="post"
                 className={`post-image ${loadedImages[post.id] ? 'loaded' : ''}`}
                 onLoad={() => handleImageLoad(post.id)}
               />
@@ -121,7 +153,7 @@ function Home() {
             </div>
             <div className="post-likes">{post.likes} likes</div>
             <div className="post-caption">
-              <strong>{post.user}</strong> {post.caption}
+              <strong>{post.user_name}</strong> {post.caption}
             </div>
           </div>
         ))}

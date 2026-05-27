@@ -1,25 +1,56 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { supabase } from './lib/supabase'
 import './CreatePost.css'
 
 function CreatePost() {
   const navigate = useNavigate()
-  const [selectedImages, setSelectedImages] = useState<string[]>([])
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([])
+  const [previewUrls, setPreviewUrls] = useState<string[]>([])
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [caption, setCaption] = useState('')
   const [location, setLocation] = useState('')
+  const [uploading, setUploading] = useState(false)
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
-    if (files) {
-      const fileArray = Array.from(files)
-      fileArray.forEach(file => {
-        const reader = new FileReader()
-        reader.onloadend = () => {
-          setSelectedImages(prev => [...prev, reader.result as string])
-        }
-        reader.readAsDataURL(file)
-      })
+    if (!files) return
+    const fileArray = Array.from(files)
+    setSelectedFiles(fileArray)
+    setPreviewUrls(fileArray.map(f => URL.createObjectURL(f)))
+  }
+
+  const handleShare = async () => {
+    if (selectedFiles.length === 0) return
+    setUploading(true)
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) throw new Error('Not authenticated')
+
+      const file = selectedFiles[0]
+      const ext = file.name.split('.').pop()
+      const path = `${user.id}/${Date.now()}.${ext}`
+
+      const { error: uploadError } = await supabase.storage
+        .from('posts')
+        .upload(path, file)
+      if (uploadError) throw uploadError
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('posts')
+        .getPublicUrl(path)
+
+      const { error: insertError } = await supabase
+        .from('posts')
+        .insert({ user_id: user.id, image_url: publicUrl, caption, location })
+      if (insertError) throw insertError
+
+      navigate('/home')
+    } catch (err) {
+      console.error(err)
+      alert('Failed to share post. Please try again.')
+    } finally {
+      setUploading(false)
     }
   }
 
@@ -28,11 +59,13 @@ function CreatePost() {
       <header className="create-post-header">
         <span onClick={() => navigate('/home')} style={{ cursor: 'pointer', fontSize: '24px' }}>✕</span>
         <h2>New Post</h2>
-        <button className="share-btn" onClick={() => navigate('/home')}>Share</button>
+        <button className="share-btn" onClick={handleShare} disabled={uploading || selectedFiles.length === 0}>
+          {uploading ? 'Sharing...' : 'Share'}
+        </button>
       </header>
 
       <div className="create-post-content">
-        {selectedImages.length === 0 ? (
+        {previewUrls.length === 0 ? (
           <div className="upload-section">
             <div className="upload-icon">📷</div>
             <h3>Select photos to share</h3>
@@ -51,12 +84,12 @@ function CreatePost() {
         ) : (
           <>
             <div className="image-preview">
-              <img src={selectedImages[currentImageIndex]} alt="Selected" />
-              {selectedImages.length > 1 && (
+              <img src={previewUrls[currentImageIndex]} alt="Selected" />
+              {previewUrls.length > 1 && (
                 <>
-                  <button className="nav-arrow left" onClick={() => setCurrentImageIndex(prev => prev > 0 ? prev - 1 : selectedImages.length - 1)}>‹</button>
-                  <button className="nav-arrow right" onClick={() => setCurrentImageIndex(prev => prev < selectedImages.length - 1 ? prev + 1 : 0)}>›</button>
-                  <div className="image-counter">{currentImageIndex + 1}/{selectedImages.length}</div>
+                  <button className="nav-arrow left" onClick={() => setCurrentImageIndex(prev => prev > 0 ? prev - 1 : previewUrls.length - 1)}>‹</button>
+                  <button className="nav-arrow right" onClick={() => setCurrentImageIndex(prev => prev < previewUrls.length - 1 ? prev + 1 : 0)}>›</button>
+                  <div className="image-counter">{currentImageIndex + 1}/{previewUrls.length}</div>
                 </>
               )}
             </div>
