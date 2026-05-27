@@ -82,7 +82,7 @@ function Home() {
           minWidth: '180px',
           display: 'block'
         }}>
-          <div className="menu-item" style={{ padding: '15px 20px', color: '#fff' }}>Profile</div>
+          <div className="menu-item" style={{ padding: '15px 20px', color: '#fff', cursor: 'pointer' }} onClick={() => { setMenuOpen(false); navigate('/profile') }}>Profile</div>
           <div className="menu-item" style={{ padding: '15px 20px', color: '#fff' }}>Settings</div>
           <div className="menu-item" style={{ padding: '15px 20px', color: '#fff' }}>Saved Posts</div>
           <div className="menu-item" style={{ padding: '15px 20px', color: '#fff', cursor: 'pointer' }} onClick={async () => {
@@ -164,7 +164,7 @@ function Home() {
         <span onClick={() => navigate('/explore')}>🔍</span>
         <span onClick={() => navigate('/create')}>➕</span>
         <span>🎬</span>
-        <span>👤</span>
+        <span onClick={() => navigate('/profile')}>👤</span>
       </nav>
     </div>
   )

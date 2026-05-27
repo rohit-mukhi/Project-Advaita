@@ -9,6 +9,7 @@ import Auth from './Auth'
 import Reviews from './Reviews'
 import BookRide from './BookRide'
 import RideTracking from './RideTracking'
+import Profile from './Profile'
 import { ProtectedRoute } from './ProtectedRoute'
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route path="/ride-tracking/:location/:rideType" element={<ProtectedRoute><RideTracking /></ProtectedRoute>} />
         <Route path="/reviews/:location" element={<ProtectedRoute><Reviews /></ProtectedRoute>} />
         <Route path="/create" element={<ProtectedRoute><CreatePost /></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   )
