@@ -18,6 +18,7 @@ function Profile() {
   const [user, setUser] = useState<User | null>(null)
   const [posts, setPosts] = useState<Post[]>([])
   const [selectedPost, setSelectedPost] = useState<Post | null>(null)
+  const [deleting, setDeleting] = useState(false)
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
@@ -34,6 +35,31 @@ function Profile() {
       }
     })
   }, [])
+
+  const handleDelete = async () => {
+    if (!selectedPost || !user) return
+    if (!confirm('Delete this post? This cannot be undone.')) return
+    setDeleting(true)
+    try {
+      // Extract storage path from public URL: everything after /object/public/posts/
+      const url = new URL(selectedPost.image_url)
+      const storagePath = url.pathname.split('/object/public/posts/')[1]
+
+      if (storagePath) {
+        await supabase.storage.from('posts').remove([decodeURIComponent(storagePath)])
+      }
+
+      const { error } = await supabase.from('posts').delete().eq('id', selectedPost.id)
+      if (error) throw error
+
+      setPosts(prev => prev.filter(p => p.id !== selectedPost.id))
+      setSelectedPost(null)
+    } catch (err: any) {
+      alert(`Failed to delete: ${err?.message ?? err}`)
+    } finally {
+      setDeleting(false)
+    }
+  }
 
   const name = user?.user_metadata?.full_name ?? 'Anonymous'
   const avatar = user?.user_metadata?.avatar_url ?? null
@@ -121,6 +147,9 @@ function Profile() {
               <p className="profile-modal-date">
                 {new Date(selectedPost.created_at).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
               </p>
+              <button className="profile-delete-btn" onClick={handleDelete} disabled={deleting}>
+                {deleting ? 'Deleting...' : '🗑️ Delete Post'}
+              </button>
             </div>
           </div>
         </div>

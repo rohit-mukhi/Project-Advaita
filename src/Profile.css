@@ -291,3 +291,26 @@
   color: #444;
   margin: 0;
 }
+
+.profile-delete-btn {
+  margin-top: 4px;
+  padding: 10px;
+  width: 100%;
+  background: transparent;
+  border: 1px solid #CF6679;
+  color: #CF6679;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.profile-delete-btn:hover:not(:disabled) {
+  background: #CF6679;
+  color: #fff;
+}
+
+.profile-delete-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
