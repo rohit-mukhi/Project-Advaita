@@ -28,14 +28,26 @@ function Location() {
 
   useEffect(() => {
     if (!locationName) return
-    fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(locationName)}&format=json&limit=1`, {
+
+    const search = (query: string) =>
+      fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=1`, {
         headers: { 'Accept-Language': 'en', 'User-Agent': 'SuenoApp/1.0' }
-      })
-      .then(res => res.json())
+      }).then(res => res.json())
+
+    const parts = locationName.split(',').map(s => s.trim())
+
+    search(locationName)
       .then(data => {
         if (data.length > 0) {
           setCoordinates([parseFloat(data[0].lat), parseFloat(data[0].lon)])
-        } else {
+        } else if (parts.length > 1) {
+          return search(parts[parts.length - 1])
+        }
+      })
+      .then(data => {
+        if (data && data.length > 0) {
+          setCoordinates([parseFloat(data[0].lat), parseFloat(data[0].lon)])
+        } else if (data) {
           setNotFound(true)
         }
       })
