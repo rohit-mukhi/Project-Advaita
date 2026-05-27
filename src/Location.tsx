@@ -28,7 +28,9 @@ function Location() {
 
   useEffect(() => {
     if (!locationName) return
-    fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(locationName)}&format=json&limit=1`)
+    fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(locationName)}&format=json&limit=1`, {
+        headers: { 'Accept-Language': 'en', 'User-Agent': 'SuenoApp/1.0' }
+      })
       .then(res => res.json())
       .then(data => {
         if (data.length > 0) {
