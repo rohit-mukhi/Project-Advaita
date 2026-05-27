@@ -46,9 +46,9 @@ function CreatePost() {
       if (insertError) throw insertError
 
       navigate('/home')
-    } catch (err) {
+    } catch (err: any) {
       console.error(err)
-      alert('Failed to share post. Please try again.')
+      alert(`Failed to share post:\n${err?.message ?? JSON.stringify(err)}`)
     } finally {
       setUploading(false)
     }
