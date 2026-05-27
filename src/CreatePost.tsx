@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from './lib/supabase'
+import { injectAdversarialNoise } from './services/imagePoison'
 import './CreatePost.css'
 
 function CreatePost() {
@@ -11,6 +12,7 @@ function CreatePost() {
   const [caption, setCaption] = useState('')
   const [location, setLocation] = useState('')
   const [uploading, setUploading] = useState(false)
+  const [poisoning, setPoisoning] = useState(false)
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
@@ -27,13 +29,16 @@ function CreatePost() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) throw new Error('Not authenticated')
 
-      const file = selectedFiles[0]
-      const ext = file.name.split('.').pop()
-      const path = `${user.id}/${Date.now()}.${ext}`
+      // Inject adversarial noise before upload
+      setPoisoning(true)
+      const poisonedFile = await injectAdversarialNoise(selectedFiles[0])
+      setPoisoning(false)
+
+      const path = `${user.id}/${Date.now()}.png`
 
       const { error: uploadError } = await supabase.storage
         .from('posts')
-        .upload(path, file)
+        .upload(path, poisonedFile)
       if (uploadError) throw uploadError
 
       const { data: { publicUrl } } = supabase.storage
@@ -60,7 +65,7 @@ function CreatePost() {
         <span onClick={() => navigate('/home')} style={{ cursor: 'pointer', fontSize: '24px' }}>✕</span>
         <h2>New Post</h2>
         <button className="share-btn" onClick={handleShare} disabled={uploading || selectedFiles.length === 0}>
-          {uploading ? 'Sharing...' : 'Share'}
+        {uploading ? (poisoning ? '🛡️ Protecting...' : 'Uploading...') : 'Share'}
         </button>
       </header>
 
