@@ -62,8 +62,6 @@ function Home() {
       <header className="home-header">
         <h1>Sueno</h1>
         <div className="header-icons">
-          <span>➕</span>
-          <span>❤️</span>
           <div className="hamburger-wrapper">
             <Hamburger toggled={menuOpen} toggle={setMenuOpen} size={24} color="#BB86FC" />
           </div>
