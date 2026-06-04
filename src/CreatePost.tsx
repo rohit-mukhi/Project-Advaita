@@ -33,9 +33,9 @@ function CreatePost() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) throw new Error('Not authenticated')
 
-      // Stage 1: Fawkes face cloaking (ArcFace embedding attack)
+      // Stage 1: Fawkes face cloaking (ArcFace embedding attack) + invisible watermark
       setStage('cloaking')
-      const { file: cloakedFile, cloaked } = await cloakFace(selectedFiles[0])
+      const { file: cloakedFile, cloaked } = await cloakFace(selectedFiles[0], user.id)
       if (!cloaked) console.warn('No face detected — skipping Fawkes, applying DCT only')
 
       // Stage 2: DCT adversarial noise on top of cloaked image

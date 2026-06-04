@@ -8,10 +8,11 @@ function fetchWithTimeout(url: string, options: RequestInit): Promise<Response> 
     .finally(() => clearTimeout(timer))
 }
 
-// Returns cloaked file, or original if no face detected (422) or Space unreachable
-export async function cloakFace(file: File): Promise<{ file: File; cloaked: boolean }> {
+// Returns cloaked + watermarked file, or original if no face detected (422)
+export async function cloakFace(file: File, userId: string): Promise<{ file: File; cloaked: boolean }> {
   const formData = new FormData()
   formData.append('file', file)
+  formData.append('user_id', userId)
 
   const res = await fetchWithTimeout(`${HF_SPACE_URL}/cloak`, {
     method: 'POST',
@@ -37,4 +38,23 @@ export async function cloakFace(file: File): Promise<{ file: File; cloaked: bool
 
 export async function pingSpace(): Promise<void> {
   await fetch(`${HF_SPACE_URL}/ping`).catch(() => {})
+}
+
+// Extract watermark from a suspect image — returns the user_id encoded at upload time
+export async function extractWatermark(file: File): Promise<string> {
+  const formData = new FormData()
+  formData.append('file', file)
+
+  const res = await fetchWithTimeout(`${HF_SPACE_URL}/extract`, {
+    method: 'POST',
+    body: formData,
+  })
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ detail: res.statusText }))
+    throw new Error(err.detail ?? 'Watermark extraction failed')
+  }
+
+  const { user_id } = await res.json()
+  return user_id
 }
