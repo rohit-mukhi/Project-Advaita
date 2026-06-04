@@ -1,0 +1,4 @@
+fawkes
+fastapi
+uvicorn
+python-multipart

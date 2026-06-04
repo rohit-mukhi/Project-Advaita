@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from './lib/supabase'
 import { injectAdversarialNoise } from './services/imagePoison'
+import { cloakFace, pingSpace } from './services/fawkesClient'
 import './CreatePost.css'
 
 function CreatePost() {
@@ -12,7 +13,10 @@ function CreatePost() {
   const [caption, setCaption] = useState('')
   const [location, setLocation] = useState('')
   const [uploading, setUploading] = useState(false)
-  const [poisoning, setPoisoning] = useState(false)
+  const [stage, setStage] = useState<'idle' | 'cloaking' | 'poisoning' | 'uploading'>('idle')
+
+  // Wake the HF Space as soon as user opens this page
+  useEffect(() => { pingSpace() }, [])
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
@@ -29,11 +33,17 @@ function CreatePost() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) throw new Error('Not authenticated')
 
-      // Inject adversarial noise before upload
-      setPoisoning(true)
-      const poisonedFile = await injectAdversarialNoise(selectedFiles[0])
-      setPoisoning(false)
+      // Stage 1: Fawkes face cloaking (ArcFace embedding attack)
+      setStage('cloaking')
+      const { file: cloakedFile, cloaked } = await cloakFace(selectedFiles[0])
+      if (!cloaked) console.warn('No face detected — skipping Fawkes, applying DCT only')
 
+      // Stage 2: DCT adversarial noise on top of cloaked image
+      setStage('poisoning')
+      const poisonedFile = await injectAdversarialNoise(cloakedFile)
+
+      // Stage 3: Upload
+      setStage('uploading')
       const path = `${user.id}/${Date.now()}.png`
 
       const { error: uploadError } = await supabase.storage
@@ -53,9 +63,13 @@ function CreatePost() {
       navigate('/home')
     } catch (err: any) {
       console.error(err)
-      alert(`Failed to share post:\n${err?.message ?? JSON.stringify(err)}`)
+      const msg = err?.name === 'AbortError'
+        ? 'Cloaking timed out (3 min). Try a smaller image or check if the Space is running.'
+        : err?.message ?? JSON.stringify(err)
+      alert(`Failed to share post:\n${msg}`)
     } finally {
       setUploading(false)
+      setStage('idle')
     }
   }
 
@@ -65,7 +79,7 @@ function CreatePost() {
         <span onClick={() => navigate('/home')} style={{ cursor: 'pointer', fontSize: '24px' }}>✕</span>
         <h2>New Post</h2>
         <button className="share-btn" onClick={handleShare} disabled={uploading || selectedFiles.length === 0}>
-        {uploading ? (poisoning ? '🛡️ Protecting...' : 'Uploading...') : 'Share'}
+          {stage === 'cloaking' ? '🧬 Cloaking face...' : stage === 'poisoning' ? '🛡️ Injecting noise...' : stage === 'uploading' ? '☁️ Uploading...' : 'Share'}
         </button>
       </header>
 
